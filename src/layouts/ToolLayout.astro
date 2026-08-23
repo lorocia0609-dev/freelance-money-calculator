@@ -1,0 +1,55 @@
+---
+import type { Locale } from '../lib/constants';
+import BaseLayout from './BaseLayout.astro';
+import AdSlot from '../components/ads/AdSlot.astro';
+import { t } from '../i18n/utils';
+import { getTool, toolPath } from '../lib/registry';
+
+/**
+ * Shared furniture for every tool page, so adding the fifth tool costs less
+ * than the second. Note the content order: the tool first, explanation and FAQ
+ * below it, ads never above the thing the visitor came for.
+ */
+export interface Props {
+  locale: Locale;
+  toolId: string;
+  title: string;
+  description: string;
+  alternates: Record<Locale, string>;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { locale, toolId, title, description, alternates, jsonLd = [], noindex = false } = Astro.props;
+const tool = getTool(toolId);
+---
+<BaseLayout
+  locale={locale}
+  title={title}
+  description={description}
+  alternates={alternates}
+  jsonLd={jsonLd}
+  noindex={noindex}
+>
+  <nav aria-label="Breadcrumb" class="text-sm mb-6" style="color: var(--color-ink-muted)">
+    <a href={`/${locale}/`}>{t(locale, 'common.home')}</a>
+    <span aria-hidden="true"> / </span>
+    <span>{t(locale, `${toolId}.title`)}</span>
+  </nav>
+
+  <slot />
+
+  {/* Highest-value placement: attention peaks right after the result. */}
+  <AdSlot height={280} label={t(locale, 'common.advertisement')} />
+
+  {tool.related.length > 0 && (
+    <nav aria-label={t(locale, 'common.relatedTools')} class="mt-12">
+      <h2 class="text-lg font-semibold mb-3">{t(locale, 'common.relatedTools')}</h2>
+      <ul>
+        {tool.related.map((id) => (
+          <li><a href={toolPath(getTool(id), locale)}>{t(locale, `${id}.title`)}</a></li>
+        ))}
+      </ul>
+    </nav>
+  )}
+</BaseLayout>

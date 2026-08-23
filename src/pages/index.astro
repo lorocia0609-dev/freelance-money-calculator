@@ -1,0 +1,7 @@
+---
+// The root resolves to the default locale. Language detection may suggest a
+// switch, but must never silently redirect: a crawler or a visitor arriving
+// from a shared link has to land on the URL it requested.
+import { DEFAULT_LOCALE } from '../lib/constants';
+return Astro.redirect(`/${DEFAULT_LOCALE}/`, 301);
+---

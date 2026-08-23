@@ -1,0 +1,51 @@
+{
+  "site": {
+    "name": "Freelance Money Calculator",
+    "tagline": "Free calculators that tell you what to charge.",
+    "metaTitle": "Freelance Money Calculator — Free Rate Calculators",
+    "metaDescription": "Free, no-signup calculators that help freelancers work out what to charge to reach the income they actually need. Works in any currency."
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "relatedTools": "Related tools",
+    "allTools": "All tools",
+    "language": "Language",
+    "currency": "Currency",
+    "home": "Home",
+    "comingSoon": "Coming soon",
+    "advertisement": "Advertisement"
+  },
+  "nav": {
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
+    "contact": "Contact"
+  },
+  "home": {
+    "heading": "Work out what you should be charging",
+    "intro": "Freelancers routinely undercharge because the arithmetic hides the real cost of unpaid time, business expenses and taxes. These calculators do that arithmetic. No account, no cost, nothing leaves your browser.",
+    "toolsHeading": "Calculators",
+    "emptyState": "The first calculator is being built and will appear here shortly."
+  },
+  "targetRate": {
+    "title": "Freelance Rate Calculator",
+    "shortDescription": "Find the hourly, daily and monthly rate you need to hit a target income.",
+    "metaTitle": "Freelance Rate Calculator — What Should You Charge?",
+    "metaDescription": "Work out the hourly, daily and monthly rate you need to reach your target income, after unpaid time, business expenses and taxes. Free and instant."
+  },
+  "legal": {
+    "privacyTitle": "Privacy Policy",
+    "termsTitle": "Terms of Use",
+    "cookiesTitle": "Cookie Policy",
+    "aboutTitle": "About",
+    "contactTitle": "Contact",
+    "lastUpdated": "Last updated",
+    "privacyBody": "This site does not use cookies, does not track you and has no user accounts. Everything you type into a calculator is processed in your browser and never sent to a server. If analytics or advertising is introduced later, this page will be rewritten before that happens, not after.",
+    "termsBody": "These calculators are provided free and as-is, for general guidance only. They are not financial, tax or legal advice. Rates and tax rules vary by country and by situation, so verify any figure that matters with a qualified professional before acting on it.",
+    "cookiesBody": "This site currently sets no cookies of any kind. No consent banner is shown because there is nothing to consent to. If advertising is introduced later, this page and the privacy policy will be updated first.",
+    "aboutBody": "Freelance Money Calculator is a small, free set of tools for people who invoice their own clients. It exists because the arithmetic behind a sustainable rate is genuinely easy to get wrong, and most freelancers get it wrong in the same direction.",
+    "contactBody": "Questions, corrections or a calculator you wish existed? Open an issue on the project's GitHub repository.",
+    "pendingNotice": "This page is a working draft and will be expanded before the site is submitted to any advertising network."
+  }
+}

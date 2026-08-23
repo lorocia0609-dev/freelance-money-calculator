@@ -1,0 +1,24 @@
+---
+import type { Locale } from '../../lib/constants';
+import { LOCALES } from '../../lib/constants';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { t } from '../../i18n/utils';
+
+export function getStaticPaths() {
+  return LOCALES.map((locale) => ({ params: { locale } }));
+}
+
+const locale = Astro.params.locale as Locale;
+const alternates = { en: '/en/terms/', es: '/es/terms/' };
+const title = t(locale, 'legal.termsTitle');
+---
+<BaseLayout
+  locale={locale}
+  title={`${title} — ${t(locale, 'site.name')}`}
+  description={t(locale, 'legal.termsBody').slice(0, 155)}
+  alternates={alternates}
+>
+  <h1 class="text-3xl font-bold tracking-tight">{title}</h1>
+  <p class="mt-6">{t(locale, 'legal.termsBody')}</p>
+  <p class="mt-6 text-sm" style="color: var(--color-ink-muted)">{t(locale, 'legal.pendingNotice')}</p>
+</BaseLayout>

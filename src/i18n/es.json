@@ -1,0 +1,51 @@
+{
+  "site": {
+    "name": "Freelance Money Calculator",
+    "tagline": "Calculadoras gratuitas que te dicen cuánto cobrar.",
+    "metaTitle": "Freelance Money Calculator — Calculadoras de Tarifas Gratis",
+    "metaDescription": "Calculadoras gratuitas y sin registro que ayudan a freelancers a saber cuánto cobrar para alcanzar los ingresos que realmente necesitan. En cualquier moneda."
+  },
+  "common": {
+    "skipToContent": "Ir al contenido",
+    "relatedTools": "Herramientas relacionadas",
+    "allTools": "Todas las herramientas",
+    "language": "Idioma",
+    "currency": "Moneda",
+    "home": "Inicio",
+    "comingSoon": "Próximamente",
+    "advertisement": "Publicidad"
+  },
+  "nav": {
+    "about": "Acerca de",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "cookies": "Cookies",
+    "contact": "Contacto"
+  },
+  "home": {
+    "heading": "Calcula cuánto deberías cobrar",
+    "intro": "Los freelancers cobran de menos porque las cuentas esconden el coste real del tiempo no facturable, los gastos del negocio y los impuestos. Estas calculadoras hacen esas cuentas. Sin cuenta de usuario, sin coste y sin que nada salga de tu navegador.",
+    "toolsHeading": "Calculadoras",
+    "emptyState": "La primera calculadora está en construcción y aparecerá aquí en breve."
+  },
+  "targetRate": {
+    "title": "Calculadora de Tarifas Freelance",
+    "shortDescription": "Calcula la tarifa por hora, día y mes que necesitas para alcanzar tus ingresos objetivo.",
+    "metaTitle": "Calculadora de Tarifas Freelance — ¿Cuánto Deberías Cobrar?",
+    "metaDescription": "Calcula la tarifa por hora, día y mes que necesitas para alcanzar tus ingresos objetivo, contando tiempo no facturable, gastos e impuestos. Gratis e inmediata."
+  },
+  "legal": {
+    "privacyTitle": "Política de Privacidad",
+    "termsTitle": "Términos de Uso",
+    "cookiesTitle": "Política de Cookies",
+    "aboutTitle": "Acerca de",
+    "contactTitle": "Contacto",
+    "lastUpdated": "Última actualización",
+    "privacyBody": "Este sitio no usa cookies, no te rastrea y no tiene cuentas de usuario. Todo lo que escribes en una calculadora se procesa en tu navegador y nunca se envía a un servidor. Si más adelante se añade analítica o publicidad, esta página se reescribirá antes de que eso ocurra, no después.",
+    "termsBody": "Estas calculadoras se ofrecen gratis y tal cual, solo como orientación general. No son asesoramiento financiero, fiscal ni legal. Las tarifas y las normas fiscales varían según el país y la situación, así que verifica con un profesional cualquier cifra que sea importante antes de actuar sobre ella.",
+    "cookiesBody": "Este sitio no instala ninguna cookie por el momento. No se muestra ningún aviso de consentimiento porque no hay nada que consentir. Si más adelante se añade publicidad, esta página y la política de privacidad se actualizarán primero.",
+    "aboutBody": "Freelance Money Calculator es un conjunto pequeño y gratuito de herramientas para quienes facturan a sus propios clientes. Existe porque las cuentas que hay detrás de una tarifa sostenible son fáciles de equivocar, y la mayoría de freelancers se equivoca en la misma dirección.",
+    "contactBody": "¿Dudas, correcciones o una calculadora que te gustaría que existiera? Abre una issue en el repositorio de GitHub del proyecto.",
+    "pendingNotice": "Esta página es un borrador de trabajo y se ampliará antes de presentar el sitio a cualquier red publicitaria."
+  }
+}

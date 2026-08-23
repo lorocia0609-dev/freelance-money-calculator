@@ -1,0 +1,31 @@
+---
+import type { Locale } from '../../lib/constants';
+import { otherLocale } from '../../i18n/utils';
+
+/**
+ * Navigates to the equivalent page in the other locale, never to that locale's
+ * home page — dropping a visitor on the home page loses their context. The
+ * query string is preserved client-side so switching does not discard values
+ * the visitor just entered.
+ */
+export interface Props {
+  locale: Locale;
+  alternates: Record<Locale, string>;
+}
+
+const { locale, alternates } = Astro.props;
+const target = otherLocale(locale);
+const label = target === 'es' ? 'Español' : 'English';
+---
+<a href={alternates[target]} hreflang={target} lang={target} rel="alternate" data-language-switcher>
+  {label}
+</a>
+
+<script>
+  // Progressive enhancement: without JS the link still works, it just drops the
+  // current inputs. With JS the visitor keeps them across the language switch.
+  const link = document.querySelector<HTMLAnchorElement>('[data-language-switcher]');
+  if (link && window.location.search) {
+    link.href += window.location.search;
+  }
+</script>

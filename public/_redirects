@@ -1,0 +1,3 @@
+# One trailing-slash convention site-wide; both forms indexing separately would
+# split ranking signals. Add a 301 here for every slug that ever changes.
+/  /en/  301

@@ -1,0 +1,34 @@
+---
+/**
+ * Reserved, empty space until ads are switched on.
+ *
+ * The reserved height is the entire point: injecting an ad into a layout that
+ * never made room for it collapses CLS exactly when the site starts earning, so
+ * rankings fall as revenue begins. Reserving the space now also makes it visible
+ * during design how much of the page advertising will really take.
+ */
+export interface Props {
+  height: number;
+  slotId?: string;
+  label?: string;
+}
+
+const { height, slotId, label = 'Advertisement' } = Astro.props;
+const adsEnabled = import.meta.env.PUBLIC_ADS_ENABLED === 'true';
+---
+<aside
+  class="ad-slot"
+  data-ad-slot={slotId ?? 'reserved'}
+  style={`min-height:${height}px`}
+  aria-label={label}
+>
+  {adsEnabled && slotId ? <div class="ad-slot__unit" data-slot={slotId}></div> : null}
+</aside>
+
+<style>
+  .ad-slot {
+    display: block;
+    width: 100%;
+    contain: layout;
+  }
+</style>

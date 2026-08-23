@@ -1,0 +1,13 @@
+# Preview deployments must never compete with production in the search index.
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Deliberately strict while no ads run. Enabling AdSense requires widening
+  # this — see CLAUDE.md, "Monetization state".
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

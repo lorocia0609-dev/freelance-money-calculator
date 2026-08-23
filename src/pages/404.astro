@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { DEFAULT_LOCALE } from '../lib/constants';
+import { t } from '../i18n/utils';
+
+const locale = DEFAULT_LOCALE;
+---
+<BaseLayout
+  locale={locale}
+  title={`404 — ${t(locale, 'site.name')}`}
+  description={t(locale, 'site.metaDescription')}
+  alternates={{ en: '/en/', es: '/es/' }}
+  noindex={true}
+>
+  <h1 class="text-3xl font-bold">404</h1>
+  <p class="mt-4"><a href={`/${locale}/`}>{t(locale, 'common.home')}</a></p>
+</BaseLayout>

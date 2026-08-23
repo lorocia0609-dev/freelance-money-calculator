@@ -162,6 +162,16 @@ function checkSiteFiles(dist) {
 function checkPage(html, route, file, config, hreflangMap) {
   const where = route;
 
+  // A meta-refresh stub (e.g. the root redirecting to the default locale) is not
+  // a content page; auditing it as one produces noise, not findings.
+  if (/<meta[^>]+http-equiv=["']refresh["']/i.test(html)) {
+    return { redirect: true };
+  }
+
+  // noindex pages are excluded from the index by design, so duplicate metadata
+  // and hreflang membership are not defects there.
+  const isNoindex = /<meta[^>]+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html);
+
   // <html lang>
   const htmlTag = tags(html, 'html')[0];
   const lang = htmlTag ? attr(htmlTag, 'lang') : null;
@@ -197,7 +207,7 @@ function checkPage(html, route, file, config, hreflangMap) {
     .filter((t) => (attr(t, 'rel') ?? '').toLowerCase() === 'alternate' && attr(t, 'hreflang'))
     .map((t) => ({ hreflang: attr(t, 'hreflang'), href: attr(t, 'href') }));
 
-  if (config.locales.length > 1) {
+  if (config.locales.length > 1 && !isNoindex) {
     if (alternates.length === 0) {
       fail('hreflang', 'No alternates on a multilingual site.', where);
     } else {
@@ -251,13 +261,14 @@ function checkPage(html, route, file, config, hreflangMap) {
     warn('third-party scripts', `${externalScripts.length} external script(s): ${externalScripts.join(', ')}`, where);
   }
 
-  return { title, description, canonical, lang };
+  return { title, description, canonical, lang, isNoindex, redirect: false };
 }
 
 function checkDuplicates(pages) {
   const byTitle = new Map();
   const byDescription = new Map();
   for (const [route, meta] of pages) {
+    if (meta.redirect || meta.isNoindex) continue;
     if (meta.title) byTitle.set(meta.title, [...(byTitle.get(meta.title) ?? []), route]);
     if (meta.description) byDescription.set(meta.description, [...(byDescription.get(meta.description) ?? []), route]);
   }

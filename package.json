@@ -1,0 +1,28 @@
+{
+  "name": "freelance-money-calculator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "audit": "node .claude/skills/micro-saas-zero-cost/scripts/audit.mjs --dist dist --locales en,es"
+  },
+  "dependencies": {
+    "@astrojs/preact": "^6.0.4",
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.4",
+    "preact": "^10.29.8",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.11"
+  }
+}

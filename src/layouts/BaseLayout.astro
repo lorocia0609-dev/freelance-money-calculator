@@ -1,0 +1,65 @@
+---
+import type { Locale } from '../lib/constants';
+import Seo from '../components/seo/Seo.astro';
+import LanguageSwitcher from '../components/ui/LanguageSwitcher.astro';
+import { t } from '../i18n/utils';
+import '../styles/global.css';
+
+export interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  alternates: Record<Locale, string>;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { locale, title, description, alternates, jsonLd = [], noindex = false } = Astro.props;
+const path = Astro.url.pathname;
+---
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <Seo
+      title={title}
+      description={description}
+      locale={locale}
+      path={path}
+      alternates={alternates}
+      jsonLd={jsonLd}
+      noindex={noindex}
+    />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <a class="skip-link" href="#main">{t(locale, 'common.skipToContent')}</a>
+
+    <header class="border-b" style="border-color: var(--color-border)">
+      <div class="mx-auto w-full max-w-3xl px-4 py-4 flex items-center justify-between gap-4">
+        <a href={`/${locale}/`} class="font-semibold">{t(locale, 'site.name')}</a>
+        <nav aria-label={t(locale, 'common.language')}>
+          <LanguageSwitcher locale={locale} alternates={alternates} />
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="mx-auto w-full max-w-3xl px-4 py-8 flex-1">
+      <slot />
+    </main>
+
+    <footer class="border-t mt-12" style="border-color: var(--color-border)">
+      <div class="mx-auto w-full max-w-3xl px-4 py-8 text-sm" style="color: var(--color-ink-muted)">
+        <nav aria-label="Legal" class="flex flex-wrap gap-x-4 gap-y-2">
+          <a href={`/${locale}/about/`}>{t(locale, 'nav.about')}</a>
+          <a href={`/${locale}/privacy/`}>{t(locale, 'nav.privacy')}</a>
+          <a href={`/${locale}/terms/`}>{t(locale, 'nav.terms')}</a>
+          <a href={`/${locale}/cookies/`}>{t(locale, 'nav.cookies')}</a>
+          <a href={`/${locale}/contact/`}>{t(locale, 'nav.contact')}</a>
+        </nav>
+        <p class="mt-4">{t(locale, 'site.tagline')}</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+---
+import type { Locale } from '../../../lib/constants';
+import { LOCALES } from '../../../lib/constants';
+import ToolLayout from '../../../layouts/ToolLayout.astro';
+import { t } from '../../../i18n/utils';
+import { TOOLS, toolAlternates } from '../../../lib/registry';
+
+/**
+ * One route generates every tool page in every locale, driven by the registry.
+ * Adding a calculator is a registry entry plus its logic and island — not a new
+ * page file per locale.
+ */
+export function getStaticPaths() {
+  return LOCALES.flatMap((locale) =>
+    TOOLS.map((tool) => ({
+      params: { locale, tool: tool.slugs[locale] },
+      props: { toolId: tool.id, status: tool.status },
+    })),
+  );
+}
+
+const locale = Astro.params.locale as Locale;
+const { toolId, status } = Astro.props;
+const alternates = toolAlternates(TOOLS.find((tool) => tool.id === toolId)!);
+const isDraft = status === 'draft';
+
+const jsonLd = isDraft
+  ? []
+  : [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: t(locale, `${toolId}.title`),
+        applicationCategory: 'FinanceApplication',
+        operatingSystem: 'Any',
+        inLanguage: locale,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      },
+    ];
+---
+<ToolLayout
+  locale={locale}
+  toolId={toolId}
+  title={t(locale, `${toolId}.metaTitle`)}
+  description={t(locale, `${toolId}.metaDescription`)}
+  alternates={alternates}
+  jsonLd={jsonLd}
+  noindex={isDraft}
+>
+  <h1 class="text-3xl font-bold tracking-tight">{t(locale, `${toolId}.title`)}</h1>
+  <p class="mt-4 text-lg" style="color: var(--color-ink-muted)">
+    {t(locale, `${toolId}.shortDescription`)}
+  </p>
+
+  {isDraft && (
+    <p class="mt-8 rounded-lg border p-4 text-sm" style="border-color: var(--color-border)">
+      {t(locale, 'common.comingSoon')}
+    </p>
+  )}
+</ToolLayout>
