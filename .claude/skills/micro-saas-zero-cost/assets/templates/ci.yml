@@ -1,0 +1,38 @@
+# TEMPLATE — copy to .github/workflows/ci.yml
+#
+# Cloudflare Pages builds and deploys; this pipeline is what stops broken work
+# from reaching it. Keep the whole run under ~2 minutes, or people stop waiting
+# for it before merging and it stops being a gate at all.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc   # same Node version locally, in CI and on Pages
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # Catches a missing canonical or a broken hreflang pair in the PR.
+      # The same defect found in Search Console costs weeks of indexing.
+      - name: Audit built output
+        run: node .claude/skills/micro-saas-zero-cost/scripts/audit.mjs --dist dist --locales en,es

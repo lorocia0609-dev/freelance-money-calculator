@@ -1,0 +1,51 @@
+---
+/**
+ * TEMPLATE — centralized SEO head. Copy to src/components/seo/Seo.astro.
+ *
+ * Every indexable page renders exactly one of these. Centralizing metadata is
+ * what prevents a page shipping months from now with a duplicated title or a
+ * missing canonical — the failures that are invisible in the browser and only
+ * show up as lost rankings.
+ */
+export interface Props {
+  title: string;                                  // ~50-60 chars, search term first
+  description: string;                            // ~140-160 chars
+  locale: string;                                 // e.g. 'en' | 'es'
+  path: string;                                   // absolute path incl. locale prefix
+  alternates: Record<string, string>;             // locale -> absolute path
+  defaultLocale: string;
+  ogImage?: string;
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, description, locale, path, alternates, defaultLocale, ogImage, jsonLd = [], noindex = false } = Astro.props;
+
+// Never hardcode the domain: preview deployments must produce their own URLs.
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? Astro.site?.toString() ?? '';
+const abs = (p: string) => new URL(p, siteUrl).toString();
+const canonical = abs(path);
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex,nofollow" />}
+
+{/* hreflang must be reciprocal and absolute, or search engines ignore it entirely. */}
+{Object.entries(alternates).map(([loc, p]) => (
+  <link rel="alternate" hreflang={loc} href={abs(p)} />
+))}
+<link rel="alternate" hreflang="x-default" href={abs(alternates[defaultLocale] ?? path)} />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content={locale} />
+{ogImage && <meta property="og:image" content={abs(ogImage)} />}
+<meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+{/* Invalid JSON-LD fails silently, which is why the audit script parses every block. */}
+{jsonLd.map((block) => (
+  <script type="application/ld+json" set:html={JSON.stringify(block)} />
+))}

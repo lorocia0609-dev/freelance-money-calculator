@@ -1,0 +1,45 @@
+---
+/**
+ * TEMPLATE — ad placeholder. Copy to src/components/ads/AdSlot.astro.
+ *
+ * Renders reserved, empty space until ads are switched on. The reserved height
+ * is the whole point: injecting an ad into a layout that never made room for it
+ * collapses CLS exactly when the site starts earning, so rankings fall as
+ * revenue begins. Reserving space up front also makes it visible during design
+ * how much of the page advertising will really take.
+ */
+export interface Props {
+  /** Reserved height in px. Must match the unit size you intend to serve. */
+  height: number;
+  /** Slot identifier, filled in when an ad account exists. */
+  slotId?: string;
+  label?: string;
+}
+
+const { height, slotId, label = 'Advertisement' } = Astro.props;
+const adsEnabled = import.meta.env.PUBLIC_ADS_ENABLED === 'true';
+---
+<aside
+  class="ad-slot"
+  data-ad-slot={slotId ?? 'reserved'}
+  style={`min-height:${height}px`}
+  aria-label={label}
+>
+  {adsEnabled && slotId ? (
+    <!--
+      Enabling ads is a configuration change, not a layout change: the network's
+      markup goes here and occupies the space that was always reserved.
+      Remember that the CSP in public/_headers must be widened at the same time.
+    -->
+    <div class="ad-slot__unit" data-slot={slotId}></div>
+  ) : null}
+</aside>
+
+<style>
+  .ad-slot {
+    display: block;
+    width: 100%;
+    /* The reserved box exists whether or not an ad renders inside it. */
+    contain: layout;
+  }
+</style>

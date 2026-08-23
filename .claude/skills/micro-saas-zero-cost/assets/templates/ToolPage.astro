@@ -1,0 +1,81 @@
+---
+/**
+ * TEMPLATE — a tool page. Copy to src/pages/<locale>/<localized-slug>/index.astro.
+ *
+ * The page composes; it does not calculate and it does not hold strings. Note
+ * the order of the content: the tool first, the explanation and FAQ below it.
+ * A page that is only a form is thin content — it neither ranks nor gets past
+ * an ad network review — and ads must never sit above the thing the visitor came for.
+ */
+import ToolLayout from '../../../layouts/ToolLayout.astro';
+import ExampleTool from '../../../components/tools/ExampleTool';
+import AdSlot from '../../../components/ads/AdSlot.astro';
+import { t } from '../../../i18n/utils';
+import { getTool } from '../../../lib/registry';
+
+const locale = 'en';
+const tool = getTool('example-tool');
+const alternates = tool.slugs; // locale -> path, used for hreflang and the switcher
+
+const faq = t(locale, 'exampleTool.faq') as { q: string; a: string }[];
+
+// JSON-LD must mirror the visible text: a mismatch is a manual-action risk.
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: t(locale, 'exampleTool.title'),
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'Any',
+    inLanguage: locale,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  },
+];
+---
+<ToolLayout
+  locale={locale}
+  title={t(locale, 'exampleTool.metaTitle')}
+  description={t(locale, 'exampleTool.metaDescription')}
+  alternates={alternates}
+  jsonLd={jsonLd}
+>
+  <h1>{t(locale, 'exampleTool.title')}</h1>
+  <p class="lede">{t(locale, 'exampleTool.intro')}</p>
+
+  {/* client:visible — the island hydrates only when it is actually reached. */}
+  <ExampleTool client:visible locale={locale} />
+
+  {/* Highest-value placement: attention peaks right after the result. */}
+  <AdSlot height={280} />
+
+  <section>
+    <h2>{t(locale, 'exampleTool.howItWorksTitle')}</h2>
+    <p>{t(locale, 'exampleTool.howItWorksBody')}</p>
+  </section>
+
+  <section>
+    <h2>{t(locale, 'exampleTool.faqTitle')}</h2>
+    {faq.map(({ q, a }) => (
+      <details>
+        <summary>{q}</summary>
+        <p>{a}</p>
+      </details>
+    ))}
+  </section>
+
+  {/* Related tools spread authority to new pages — the cheapest ranking lever available. */}
+  <nav aria-label={t(locale, 'common.relatedTools')}>
+    {tool.related.map((id) => (
+      <a href={getTool(id).slugs[locale]}>{t(locale, `${id}.title`)}</a>
+    ))}
+  </nav>
+</ToolLayout>
