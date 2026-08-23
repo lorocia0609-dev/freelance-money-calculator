@@ -137,7 +137,10 @@
         "deductions": {
           "severe": "Deductions take most of what you invoice. Worth confirming the rates before you rely on the result."
         }
-      }
+      },
+      "copyLink": "Copy shareable link",
+      "copied": "Link copied",
+      "shareHelp": "The link reproduces exactly these values. Nothing you enter leaves your browser."
     }
   },
   "legal": {

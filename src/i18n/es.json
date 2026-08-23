@@ -137,7 +137,10 @@
         "deductions": {
           "severe": "Las deducciones se llevan la mayor parte de lo que facturas. Conviene confirmar los porcentajes antes de fiarte del resultado."
         }
-      }
+      },
+      "copyLink": "Copiar enlace",
+      "copied": "Enlace copiado",
+      "shareHelp": "El enlace reproduce exactamente estos valores. Nada de lo que introduces sale de tu navegador."
     }
   },
   "legal": {

@@ -51,6 +51,25 @@ export const TARGET_RATE_DEFAULTS: TargetRateInput = {
   overheadPercent: 10,
 };
 
+/**
+ * Query-string names for this tool's inputs.
+ *
+ * Short enough that a shared link stays readable, and **frozen**: a published
+ * link outlives the code, so renaming one of these would silently change what
+ * every existing link means. Add new fields here; never rename an old one
+ * without also accepting the old name.
+ */
+export const TARGET_RATE_PARAMS: { readonly [K in keyof TargetRateInput]: string } = {
+  targetMonthlyNetIncome: 'income',
+  daysPerWeek: 'days',
+  hoursPerDay: 'hours',
+  billablePercent: 'billable',
+  weeksPerYear: 'weeks',
+  taxPercent: 'tax',
+  platformFeePercent: 'fee',
+  overheadPercent: 'expenses',
+} as const;
+
 /* ------------------------------------------------------------------ output */
 
 /** Every amount in one period. The four parts always sum exactly to `gross`. */

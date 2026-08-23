@@ -1,11 +1,20 @@
-import { useMemo, useState } from 'preact/hooks';
-import { SUPPORTED_CURRENCIES, type Currency, type Locale } from '../../lib/constants';
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { SUPPORTED_CURRENCIES, isCurrency, type Currency, type Locale } from '../../lib/constants';
 import { formatCurrency, formatNumber, formatPercent } from '../../lib/format';
+import { readStored, writeStored } from '../../lib/storage';
+import {
+  decodeNumericState,
+  encodeNumericState,
+  hasAnyParam,
+  readEnumParam,
+} from '../../lib/url-state';
 import {
   TARGET_RATE_DEFAULTS,
+  TARGET_RATE_PARAMS,
   type MoneyBreakdown,
   type TargetRateInput,
   calculateTargetRate,
+  normalizeTargetRateInput,
   validateTargetRateInput,
 } from '../../lib/tools/target-rate';
 
@@ -51,6 +60,9 @@ export interface TargetRateStrings {
   totalHoursLabel: string;
   taxNote: string;
   disclaimer: string;
+  copyLink: string;
+  copied: string;
+  shareHelp: string;
   fields: Record<FieldName | 'currency', FieldStrings>;
   errors: Record<string, Record<string, string>>;
   warnings: Record<string, Record<string, string>>;
@@ -61,6 +73,20 @@ interface Props {
   defaultCurrency: Currency;
   strings: TargetRateStrings;
 }
+
+/**
+ * Versioned, so a future change to the stored shape can be ignored rather than
+ * crashing on a value written by an older build.
+ */
+const STORAGE_KEY = 'fmc:targetRate:v1';
+
+interface StoredState {
+  input: Partial<TargetRateInput>;
+  currency: string;
+}
+
+/** Long enough that typing does not spam history, short enough to feel instant. */
+const SYNC_DELAY_MS = 400;
 
 /** Inputs are held as raw strings so a field can be emptied while typing. */
 type RawState = Record<FieldName, string>;
@@ -95,8 +121,41 @@ const NUMERIC_BOUNDS: Record<FieldName, { min: number; max: number; step: number
 };
 
 export default function TargetRateCalculator({ locale, defaultCurrency, strings }: Props) {
+  // Initialized from the defaults so the first client render matches the HTML
+  // Astro rendered at build time. Reading the URL or localStorage here instead
+  // would make the two disagree and corrupt hydration.
   const [raw, setRaw] = useState<RawState>(() => toRaw(TARGET_RATE_DEFAULTS));
   const [currency, setCurrency] = useState<Currency>(defaultCurrency);
+  const [copied, setCopied] = useState(false);
+
+  // Nothing is written back until the visitor actually changes something, so
+  // simply opening the page never rewrites the address bar or storage.
+  const touched = useRef(false);
+
+  /**
+   * Restores state once, on mount.
+   *
+   * A link wins over stored values: someone opening a shared configuration must
+   * see that configuration, not whatever they last typed here themselves.
+   */
+  useEffect(() => {
+    const search = window.location.search;
+
+    if (hasAnyParam(search, TARGET_RATE_PARAMS)) {
+      setRaw(toRaw(normalizeTargetRateInput(decodeNumericState(search, TARGET_RATE_PARAMS))));
+      setCurrency(readEnumParam(search, 'currency', SUPPORTED_CURRENCIES, defaultCurrency));
+      return;
+    }
+
+    const stored = readStored<StoredState>(STORAGE_KEY);
+    if (!stored) return;
+    // Anything could be under that key — a value from an older build, or edited
+    // by hand. Normalizing it is the same guarantee a shared link gets.
+    setRaw(toRaw(normalizeTargetRateInput(stored.input ?? {})));
+    if (typeof stored.currency === 'string' && isCurrency(stored.currency)) {
+      setCurrency(stored.currency);
+    }
+  }, []);
 
   // Derived during render, not in an effect, so the server-rendered HTML already
   // carries a full result. The page is meaningful with JavaScript disabled.
@@ -106,6 +165,43 @@ export default function TargetRateCalculator({ locale, defaultCurrency, strings 
     () => (issues.length === 0 ? calculateTargetRate(input) : null),
     [input, issues],
   );
+
+  /**
+   * Mirrors valid state into the address bar and localStorage.
+   *
+   * Only complete, valid input is written: persisting a half-typed value would
+   * hand out a link that reproduces a broken form. replaceState rather than
+   * pushState, so editing does not fill the back button with history entries.
+   */
+  useEffect(() => {
+    if (!touched.current || issues.length > 0) return;
+
+    const timer = window.setTimeout(() => {
+      const params = encodeNumericState(input, TARGET_RATE_PARAMS);
+      params.set('currency', currency);
+      window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
+      writeStored(STORAGE_KEY, { input, currency } satisfies StoredState);
+    }, SYNC_DELAY_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [input, currency, issues.length]);
+
+  const shareableUrl = (): string => {
+    const params = encodeNumericState(input, TARGET_RATE_PARAMS);
+    params.set('currency', currency);
+    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareableUrl());
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard access can be blocked or unavailable over plain HTTP. The
+      // address bar already holds the same URL, so there is nothing to recover.
+    }
+  };
 
   const errorFor = (field: FieldName): string | undefined => {
     const issue = issues.find((candidate) => candidate.field === field);
@@ -120,6 +216,7 @@ export default function TargetRateCalculator({ locale, defaultCurrency, strings 
 
   const update = (field: FieldName) => (event: Event) => {
     const target = event.currentTarget as HTMLInputElement;
+    touched.current = true;
     setRaw((previous) => ({ ...previous, [field]: target.value }));
   };
 
@@ -242,6 +339,23 @@ export default function TargetRateCalculator({ locale, defaultCurrency, strings 
             {strings.retention.replace('{percent}', formatPercent(result.retentionRate * 100, locale))}
           </p>
         ) : null}
+
+        {result ? (
+          <div class="mt-4 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={copyLink}
+              class="rounded-lg border px-3 py-2 text-sm font-medium"
+              style="border-color: var(--color-border); color: var(--color-ink)"
+            >
+              {copied ? strings.copied : strings.copyLink}
+            </button>
+            {/* The confirmation is announced, not just shown, and is text rather than a colour change. */}
+            <span aria-live="polite" class="text-xs" style="color: var(--color-ink-muted)">
+              {copied ? strings.copied : strings.shareHelp}
+            </span>
+          </div>
+        ) : null}
       </section>
 
       <div class="grid gap-6 md:grid-cols-5 md:items-start">
@@ -256,7 +370,10 @@ export default function TargetRateCalculator({ locale, defaultCurrency, strings 
               <select
                 id="currency"
                 value={currency}
-                onChange={(event) => setCurrency((event.currentTarget as HTMLSelectElement).value as Currency)}
+                onChange={(event) => {
+                  touched.current = true;
+                  setCurrency((event.currentTarget as HTMLSelectElement).value as Currency);
+                }}
                 aria-describedby="currency-help"
                 class="w-full rounded-lg border px-3 py-2.5 text-base"
                 style="border-color: var(--color-border); background: var(--color-surface); color: var(--color-ink)"
