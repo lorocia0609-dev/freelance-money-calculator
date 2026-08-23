@@ -30,9 +30,115 @@
   },
   "targetRate": {
     "title": "Freelance Rate Calculator",
-    "shortDescription": "Find the hourly, daily and monthly rate you need to hit a target income.",
+    "shortDescription": "Find the hourly rate you need to hit a target monthly income, after unpaid time, expenses and taxes.",
     "metaTitle": "Freelance Rate Calculator — What Should You Charge?",
-    "metaDescription": "Work out the hourly, daily and monthly rate you need to reach your target income, after unpaid time, business expenses and taxes. Free and instant."
+    "metaDescription": "Work out the hourly rate you need to reach your target monthly income, after unpaid time, business expenses and taxes. Free, instant, no signup.",
+    "ui": {
+      "question": "How much should I charge per hour to reach my desired freelance income?",
+      "headline": "Your recommended hourly rate",
+      "perHour": "per billable hour",
+      "retention": "You keep {percent} of every amount you invoice.",
+      "prompt": "Fill in every field to see your rate.",
+      "recalculating": "Rate updated",
+      "incomeLegend": "What you want to take home",
+      "timeLegend": "How you work",
+      "deductionsLegend": "What comes off the top",
+      "breakdownTitle": "Where the money goes",
+      "hoursTitle": "Your billable hours",
+      "perMonth": "Per month",
+      "perYear": "Per year",
+      "grossLabel": "Invoiced (gross)",
+      "platformFeeLabel": "Platform fee",
+      "overheadLabel": "Business expenses",
+      "taxLabel": "Tax and contributions",
+      "netLabel": "You keep (net)",
+      "billableHoursLabel": "Billable hours",
+      "totalHoursLabel": "Hours worked, billable or not",
+      "taxNote": "Tax is applied to what remains after the platform fee and expenses, because both are normally deductible.",
+      "disclaimer": "Tax, platform fee and expense rates are estimates you set yourself — they vary by country, contract and situation. This calculator is general guidance, not tax, financial or legal advice. Check anything that matters with a qualified professional.",
+      "fields": {
+        "targetMonthlyNetIncome": {
+          "label": "Target monthly income",
+          "help": "What you want left over each month, after everything below."
+        },
+        "currency": {
+          "label": "Currency",
+          "help": "Amounts are shown in this currency. Nothing is converted."
+        },
+        "daysPerWeek": {
+          "label": "Working days per week",
+          "help": "Between 1 and 7."
+        },
+        "hoursPerDay": {
+          "label": "Working hours per day",
+          "help": "Hours at work, not only the ones you invoice."
+        },
+        "weeksPerYear": {
+          "label": "Working weeks per year",
+          "help": "52 minus holidays, public holidays and sick days."
+        },
+        "billablePercent": {
+          "label": "Billable hours",
+          "help": "Share of your working hours a client actually pays for. The rest is admin, sales and proposals. Most freelancers overestimate this."
+        },
+        "taxPercent": {
+          "label": "Tax and contributions",
+          "help": "Your estimated rate on profit, including social contributions."
+        },
+        "platformFeePercent": {
+          "label": "Platform fee",
+          "help": "Marketplace commission on each invoice. Use 0 if you invoice clients directly."
+        },
+        "overheadPercent": {
+          "label": "Business expenses",
+          "help": "Software, equipment, insurance and similar, as a share of what you invoice."
+        }
+      },
+      "errors": {
+        "targetMonthlyNetIncome": {
+          "notPositive": "Enter the monthly income you want, as a number above zero."
+        },
+        "daysPerWeek": {
+          "outOfRange": "Enter between 1 and 7 days."
+        },
+        "hoursPerDay": {
+          "outOfRange": "Enter between 1 and 24 hours."
+        },
+        "weeksPerYear": {
+          "outOfRange": "Enter between 1 and 52 weeks."
+        },
+        "billablePercent": {
+          "outOfRange": "Enter between 1% and 100%. At 0% there would be nothing to invoice."
+        },
+        "taxPercent": {
+          "outOfRange": "Enter between 0% and 100%.",
+          "consumesEverything": "At 100% tax no rate would leave anything behind."
+        },
+        "platformFeePercent": {
+          "outOfRange": "Enter between 0% and 100%."
+        },
+        "overheadPercent": {
+          "outOfRange": "Enter between 0% and 100%."
+        },
+        "deductions": {
+          "exceedGross": "The platform fee and expenses together take 100% or more of every invoice, so no rate can work. Tax is not part of this limit — it applies to what is left after these two."
+        }
+      },
+      "warnings": {
+        "billablePercent": {
+          "optimistic": "Over 90% billable is rare over a full year. Admin, sales and unpaid revisions add up."
+        },
+        "workload": {
+          "unsustainable": "That is more than 60 hours a week. Worth checking the schedule is one you can hold."
+        },
+        "weeksPerYear": {
+          "noTimeOff": "More than 50 weeks leaves almost no holiday. Your rate has to fund the time you do not work."
+        },
+        "deductions": {
+          "severe": "Deductions take most of what you invoice. Worth confirming the rates before you rely on the result."
+        }
+      }
+    }
   },
   "legal": {
     "privacyTitle": "Privacy Policy",

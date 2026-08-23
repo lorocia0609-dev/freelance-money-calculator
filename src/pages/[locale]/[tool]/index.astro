@@ -2,6 +2,8 @@
 import type { Locale } from '../../../lib/constants';
 import { LOCALES } from '../../../lib/constants';
 import ToolLayout from '../../../layouts/ToolLayout.astro';
+import TargetRateCalculator, { type TargetRateStrings } from '../../../components/tools/TargetRateCalculator';
+import { DEFAULT_CURRENCY } from '../../../lib/constants';
 import { t } from '../../../i18n/utils';
 import { TOOLS, toolAlternates } from '../../../lib/registry';
 
@@ -52,9 +54,18 @@ const jsonLd = isDraft
     {t(locale, `${toolId}.shortDescription`)}
   </p>
 
-  {isDraft && (
-    <p class="mt-8 rounded-lg border p-4 text-sm" style="border-color: var(--color-border)">
-      {t(locale, 'common.comingSoon')}
-    </p>
+  {/*
+    One island per tool, selected explicitly so Astro can statically resolve the
+    hydration directive. client:idle rather than client:load: the component
+    server-renders a complete result, so nothing needs JavaScript to be readable
+    and hydration can wait for the browser to be free.
+  */}
+  {toolId === 'targetRate' && (
+    <TargetRateCalculator
+      client:idle
+      locale={locale}
+      defaultCurrency={DEFAULT_CURRENCY}
+      strings={t<TargetRateStrings>(locale, 'targetRate.ui')}
+    />
   )}
 </ToolLayout>

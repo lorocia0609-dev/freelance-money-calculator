@@ -14,6 +14,7 @@
   --color-ink-muted: #4b5563;
   --color-border: #d8dce3;
   --color-accent: #0b5cab;
+  --color-danger: #b3261e;
 }
 
 /* Dark mode is where contrast failures usually hide, so the tokens are redefined
@@ -26,6 +27,7 @@
     --color-ink-muted: #a8b1bd;
     --color-border: #2c333d;
     --color-accent: #6fb0f5;
+    --color-danger: #ff9d94;
   }
 }
 

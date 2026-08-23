@@ -30,9 +30,115 @@
   },
   "targetRate": {
     "title": "Calculadora de Tarifas Freelance",
-    "shortDescription": "Calcula la tarifa por hora, día y mes que necesitas para alcanzar tus ingresos objetivo.",
+    "shortDescription": "Calcula la tarifa por hora que necesitas para alcanzar tus ingresos mensuales objetivo, contando tiempo no facturable, gastos e impuestos.",
     "metaTitle": "Calculadora de Tarifas Freelance — ¿Cuánto Deberías Cobrar?",
-    "metaDescription": "Calcula la tarifa por hora, día y mes que necesitas para alcanzar tus ingresos objetivo, contando tiempo no facturable, gastos e impuestos. Gratis e inmediata."
+    "metaDescription": "Calcula la tarifa por hora que necesitas para alcanzar tus ingresos mensuales objetivo, contando tiempo no facturable, gastos e impuestos. Gratis y sin registro.",
+    "ui": {
+      "question": "¿Cuánto debo cobrar por hora para alcanzar los ingresos que quiero como freelance?",
+      "headline": "Tu tarifa por hora recomendada",
+      "perHour": "por hora facturable",
+      "retention": "Te quedas con el {percent} de todo lo que facturas.",
+      "prompt": "Completa todos los campos para ver tu tarifa.",
+      "recalculating": "Tarifa actualizada",
+      "incomeLegend": "Lo que quieres que te quede",
+      "timeLegend": "Cómo trabajas",
+      "deductionsLegend": "Lo que se descuenta",
+      "breakdownTitle": "A dónde va el dinero",
+      "hoursTitle": "Tus horas facturables",
+      "perMonth": "Al mes",
+      "perYear": "Al año",
+      "grossLabel": "Facturado (bruto)",
+      "platformFeeLabel": "Comisión de plataforma",
+      "overheadLabel": "Gastos del negocio",
+      "taxLabel": "Impuestos y cotizaciones",
+      "netLabel": "Te queda (neto)",
+      "billableHoursLabel": "Horas facturables",
+      "totalHoursLabel": "Horas trabajadas, facturables o no",
+      "taxNote": "El impuesto se aplica sobre lo que queda tras la comisión y los gastos, porque ambos suelen ser deducibles.",
+      "disclaimer": "Los porcentajes de impuestos, comisión y gastos son estimaciones que defines tú — varían según el país, el contrato y tu situación. Esta calculadora es orientación general, no asesoramiento fiscal, financiero ni legal. Verifica con un profesional cualquier cifra que sea importante.",
+      "fields": {
+        "targetMonthlyNetIncome": {
+          "label": "Ingreso mensual objetivo",
+          "help": "Lo que quieres que te quede cada mes, después de todo lo de abajo."
+        },
+        "currency": {
+          "label": "Moneda",
+          "help": "Los importes se muestran en esta moneda. No se convierte nada."
+        },
+        "daysPerWeek": {
+          "label": "Días trabajados por semana",
+          "help": "Entre 1 y 7."
+        },
+        "hoursPerDay": {
+          "label": "Horas trabajadas por día",
+          "help": "Horas de trabajo, no solo las que facturas."
+        },
+        "weeksPerYear": {
+          "label": "Semanas trabajadas al año",
+          "help": "52 menos vacaciones, festivos y bajas."
+        },
+        "billablePercent": {
+          "label": "Horas facturables",
+          "help": "Porcentaje de tus horas de trabajo que un cliente paga realmente. El resto es administración, ventas y propuestas. Casi todo el mundo lo sobreestima."
+        },
+        "taxPercent": {
+          "label": "Impuestos y cotizaciones",
+          "help": "Tu tipo estimado sobre el beneficio, incluidas las cotizaciones sociales."
+        },
+        "platformFeePercent": {
+          "label": "Comisión de plataforma",
+          "help": "Comisión del marketplace sobre cada factura. Pon 0 si facturas directamente al cliente."
+        },
+        "overheadPercent": {
+          "label": "Gastos del negocio",
+          "help": "Software, equipo, seguros y similares, como porcentaje de lo que facturas."
+        }
+      },
+      "errors": {
+        "targetMonthlyNetIncome": {
+          "notPositive": "Introduce el ingreso mensual que quieres, como un número mayor que cero."
+        },
+        "daysPerWeek": {
+          "outOfRange": "Introduce entre 1 y 7 días."
+        },
+        "hoursPerDay": {
+          "outOfRange": "Introduce entre 1 y 24 horas."
+        },
+        "weeksPerYear": {
+          "outOfRange": "Introduce entre 1 y 52 semanas."
+        },
+        "billablePercent": {
+          "outOfRange": "Introduce entre 1% y 100%. Con 0% no habría nada que facturar."
+        },
+        "taxPercent": {
+          "outOfRange": "Introduce entre 0% y 100%.",
+          "consumesEverything": "Con un 100% de impuestos ninguna tarifa dejaría nada."
+        },
+        "platformFeePercent": {
+          "outOfRange": "Introduce entre 0% y 100%."
+        },
+        "overheadPercent": {
+          "outOfRange": "Introduce entre 0% y 100%."
+        },
+        "deductions": {
+          "exceedGross": "La comisión y los gastos juntos se llevan el 100% o más de cada factura, así que ninguna tarifa funciona. El impuesto no cuenta en este límite: se aplica sobre lo que queda tras estos dos."
+        }
+      },
+      "warnings": {
+        "billablePercent": {
+          "optimistic": "Más del 90% facturable es raro en un año completo. La administración, las ventas y las revisiones no pagadas suman."
+        },
+        "workload": {
+          "unsustainable": "Son más de 60 horas semanales. Conviene comprobar que es un ritmo que puedes sostener."
+        },
+        "weeksPerYear": {
+          "noTimeOff": "Más de 50 semanas deja casi sin vacaciones. Tu tarifa tiene que financiar también el tiempo que no trabajas."
+        },
+        "deductions": {
+          "severe": "Las deducciones se llevan la mayor parte de lo que facturas. Conviene confirmar los porcentajes antes de fiarte del resultado."
+        }
+      }
+    }
   },
   "legal": {
     "privacyTitle": "Política de Privacidad",
