@@ -4,7 +4,8 @@ import { LOCALES } from '../../lib/constants';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/ads/AdSlot.astro';
 import { t } from '../../i18n/utils';
-import { TOOLS, toolPath } from '../../lib/registry';
+import { listedTools, toolPath } from '../../lib/registry';
+import { INDEXABLE } from '../../lib/site';
 
 export function getStaticPaths() {
   return LOCALES.map((locale) => ({ params: { locale } }));
@@ -13,9 +14,7 @@ export function getStaticPaths() {
 const locale = Astro.params.locale as Locale;
 const alternates = { en: '/en/', es: '/es/' };
 
-// Draft tools stay out of public navigation so an unfinished page never enters
-// the search index or gets linked from a published one.
-const visibleTools = TOOLS.filter((tool) => tool.status === 'published');
+const visibleTools = listedTools(!INDEXABLE);
 
 const jsonLd = [
   {

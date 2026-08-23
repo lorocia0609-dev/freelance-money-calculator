@@ -137,24 +137,45 @@ const tags = (html, tagName) => html.match(new RegExp(`<${tagName}\\b[^>]*>`, 'g
 
 /* ------------------------------------------------------------------ checks */
 
-function checkSiteFiles(dist) {
+/**
+ * A deployment where every page is noindex is a deliberate state, not a defect:
+ * a live test on a temporary hostname, or a staging environment. Its
+ * expectations are inverted — robots.txt should block, and a sitemap should be
+ * absent — so auditing it against the indexable rules only produces noise.
+ */
+function checkSiteFiles(dist, indexable) {
   const robots = path.join(dist, 'robots.txt');
   const sitemapCandidates = ['sitemap.xml', 'sitemap-index.xml'].map((f) => path.join(dist, f));
   const sitemap = sitemapCandidates.find((f) => existsSync(f));
 
   if (!existsSync(robots)) {
-    fail('robots.txt', 'Missing. Crawlers get no sitemap pointer.', dist);
+    fail('robots.txt', 'Missing.', dist);
   } else {
     const content = readTextSync(robots);
-    if (!/sitemap:\s*https?:\/\//i.test(content)) {
+    if (!indexable) {
+      if (/disallow:\s*\/\s*$/im.test(content)) {
+        pass('robots.txt', 'Blocks crawling, as a non-indexable deployment should.', robots);
+      } else {
+        fail('robots.txt', 'Every page is noindex but robots.txt does not disallow crawling.', robots);
+      }
+      if (/sitemap:/i.test(content)) {
+        warn('robots.txt', 'Advertises a sitemap on a deployment that must not be crawled.', robots);
+      }
+    } else if (!/sitemap:\s*https?:\/\//i.test(content)) {
       warn('robots.txt', 'Does not reference the sitemap by absolute URL.', robots);
     } else {
       pass('robots.txt', 'Present and references the sitemap.', robots);
     }
   }
 
-  if (!sitemap) fail('sitemap', 'No sitemap.xml or sitemap-index.xml in the build output.', dist);
-  else pass('sitemap', `Present (${path.basename(sitemap)}).`, sitemap);
+  if (!indexable) {
+    if (sitemap) warn('sitemap', 'Published on a deployment where every page is noindex.', sitemap);
+    else pass('sitemap', 'Absent, as a non-indexable deployment should be.', dist);
+  } else if (!sitemap) {
+    fail('sitemap', 'No sitemap.xml or sitemap-index.xml in the build output.', dist);
+  } else {
+    pass('sitemap', `Present (${path.basename(sitemap)}).`, sitemap);
+  }
 
   return sitemap;
 }
@@ -235,7 +256,7 @@ function checkPage(html, route, file, config, hreflangMap) {
       fail('JSON-LD', `Invalid JSON in a structured-data block: ${e.message}`, where);
     }
   }
-  if (ldBlocks.length === 0) warn('JSON-LD', 'No structured data on this page.', where);
+  if (ldBlocks.length === 0 && !isNoindex) warn('JSON-LD', 'No structured data on this page.', where);
 
   // Images without alt
   const imgs = tags(html, 'img');
@@ -343,7 +364,18 @@ async function main() {
     process.exit(2);
   }
 
-  checkSiteFiles(dist);
+  // Determined before anything else, because it changes what "correct" means.
+  const indexable = htmlFiles.some((file) => {
+    const html = readTextSync(file);
+    if (/<meta[^>]+http-equiv=["']refresh["']/i.test(html)) return false;
+    return !/<meta[^>]+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html);
+  });
+
+  if (!indexable) {
+    pass('deployment mode', 'Every page is noindex — audited as a non-indexable deployment.', dist);
+  }
+
+  checkSiteFiles(dist, indexable);
 
   const pages = new Map();
   const hreflangMap = new Map();

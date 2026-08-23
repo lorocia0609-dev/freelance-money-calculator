@@ -5,6 +5,10 @@ import tailwindcss from '@tailwindcss/vite';
 import { LOCALES } from './src/lib/constants';
 import { TOOLS, toolPath } from './src/lib/registry';
 
+// Read from process.env rather than import.meta.env: this file runs in Node
+// before Astro's client-side env is available.
+const indexable = process.env.PUBLIC_INDEXABLE === 'true';
+
 // Never hardcode the production domain: preview deployments must generate their
 // own canonicals and hreflang, or they compete with production in the index.
 const site = process.env.PUBLIC_SITE_URL ?? 'https://freelance-money-calculator.pages.dev';
@@ -34,7 +38,10 @@ export default defineConfig({
   integrations: [
     preact(),
     sitemap({
-      filter: (page) => !excludedPaths.has(new URL(page).pathname),
+      // A deployment that must not be indexed publishes no sitemap either.
+      // Every page already carries noindex and robots.txt disallows crawling;
+      // a sitemap would only contradict both.
+      filter: (page) => indexable && !excludedPaths.has(new URL(page).pathname),
       i18n: { defaultLocale: 'en', locales: { en: 'en', es: 'es' } },
     }),
   ],

@@ -25,13 +25,19 @@ const REQUIRED_SECTIONS = [
 ] as const;
 
 describe('tool content', () => {
-  const published = TOOLS.filter((tool) => tool.status === 'published');
+  // Checked for any tool whose content has been written, not only published
+  // ones. Content completeness is a property of the content: a draft with an
+  // English FAQ and no Spanish one is just as broken, and it is cheaper to
+  // catch now than on the day it is promoted.
+  const withContent = TOOLS.filter((tool) =>
+    LOCALES.some((locale) => CATALOGUES[locale][tool.id]?.content !== undefined),
+  );
 
-  it('there is at least one published tool to check', () => {
-    expect(published.length).toBeGreaterThan(0);
+  it('finds the tools that have content, so the checks below are not vacuous', () => {
+    expect(withContent.length).toBeGreaterThan(0);
   });
 
-  it.each(published.map((tool) => tool.id))('%s has every content section in every locale', (id) => {
+  it.each(withContent.map((tool) => tool.id))('%s has every content section in every locale', (id) => {
     for (const locale of LOCALES) {
       const content = CATALOGUES[locale][id]?.content;
       expect(content, `${id}.content missing in ${locale}.json`).toBeDefined();
@@ -41,7 +47,7 @@ describe('tool content', () => {
     }
   });
 
-  it.each(published.map((tool) => tool.id))('%s has the same number of FAQ entries per locale', (id) => {
+  it.each(withContent.map((tool) => tool.id))('%s has the same number of FAQ entries per locale', (id) => {
     const counts = LOCALES.map((locale) => CATALOGUES[locale][id].content.faq.items.length);
     expect(new Set(counts).size).toBe(1);
     // The skill asks for 4-8 entries: enough to cover real questions, few enough
@@ -50,7 +56,7 @@ describe('tool content', () => {
     expect(counts[0]).toBeLessThanOrEqual(8);
   });
 
-  it.each(published.map((tool) => tool.id))('%s FAQ entries are all answered', (id) => {
+  it.each(withContent.map((tool) => tool.id))('%s FAQ entries are all answered', (id) => {
     for (const locale of LOCALES) {
       for (const item of CATALOGUES[locale][id].content.faq.items) {
         expect(item.q.trim().length).toBeGreaterThan(10);
@@ -59,7 +65,7 @@ describe('tool content', () => {
     }
   });
 
-  it.each(published.map((tool) => tool.id))('%s documents every input it exposes', (id) => {
+  it.each(withContent.map((tool) => tool.id))('%s documents every input it exposes', (id) => {
     // A variable the form asks for but the copy never explains is the gap a
     // visitor arrives with, so the counts have to match.
     for (const locale of LOCALES) {
@@ -70,13 +76,13 @@ describe('tool content', () => {
     }
   });
 
-  it.each(published.map((tool) => tool.id))('%s carries a disclaimer in every locale', (id) => {
+  it.each(withContent.map((tool) => tool.id))('%s carries a disclaimer in every locale', (id) => {
     for (const locale of LOCALES) {
       expect(CATALOGUES[locale][id].content.disclaimer.body.length).toBeGreaterThan(100);
     }
   });
 
-  it.each(published.map((tool) => tool.id))('%s meta title and description are within useful lengths', (id) => {
+  it.each(withContent.map((tool) => tool.id))('%s meta title and description are within useful lengths', (id) => {
     for (const locale of LOCALES) {
       const tool = CATALOGUES[locale][id];
       expect(tool.metaTitle.length, `${id} metaTitle in ${locale}`).toBeLessThanOrEqual(65);

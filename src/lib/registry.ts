@@ -33,7 +33,7 @@ export const TOOLS: ToolMeta[] = [
     },
     category: 'rates',
     related: [],
-    status: 'published',
+    status: 'draft',
   },
 ];
 
@@ -58,4 +58,16 @@ export function toolAlternates(tool: ToolMeta): Record<Locale, string> {
 
 export function publishedTools(): ToolMeta[] {
   return TOOLS.filter((t) => t.status === 'published');
+}
+
+/**
+ * Tools to list in public navigation.
+ *
+ * Drafts are normally hidden, so an unfinished page never enters the crawl
+ * graph. On a deployment that is not indexable at all there is no crawl graph
+ * to protect, and reaching the tool is the entire purpose of that deployment —
+ * so drafts are listed there instead of forcing testers to type URLs by hand.
+ */
+export function listedTools(includeDrafts: boolean): ToolMeta[] {
+  return includeDrafts ? [...TOOLS] : publishedTools();
 }

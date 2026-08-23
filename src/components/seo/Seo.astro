@@ -1,6 +1,7 @@
 ---
 import type { Locale } from '../../lib/constants';
 import { DEFAULT_LOCALE } from '../../lib/constants';
+import { INDEXABLE } from '../../lib/site';
 
 /**
  * Every indexable page renders exactly one of these. Centralizing metadata is
@@ -19,7 +20,12 @@ export interface Props {
   noindex?: boolean;
 }
 
-const { title, description, locale, path, alternates, ogImage, jsonLd = [], noindex = false } = Astro.props;
+const { title, description, locale, path, alternates, ogImage, jsonLd = [], noindex: pageNoindex = false } = Astro.props;
+
+// A page is noindex either because it asks to be (a draft, a 404) or because
+// the whole deployment is not meant to be indexed yet — a test deployment on a
+// temporary hostname, for instance.
+const noindex = pageNoindex || !INDEXABLE;
 
 const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? Astro.site?.toString() ?? '';
 const abs = (p: string) => new URL(p, siteUrl).toString();
