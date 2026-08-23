@@ -25,6 +25,19 @@ export function t<T = string>(locale: Locale, key: string): T {
   return node as T;
 }
 
+/**
+ * Like {@link t}, but returns undefined instead of throwing when a key is
+ * absent. For optional sections — a draft tool may not have its content written
+ * yet — where a missing key is a state, not a bug.
+ */
+export function tOptional<T>(locale: Locale, key: string): T | undefined {
+  try {
+    return t<T>(locale, key);
+  } catch {
+    return undefined;
+  }
+}
+
 /** Interpolates {placeholders}. Never concatenate fragments — word order differs by language. */
 export function tf(locale: Locale, key: string, values: Record<string, string | number>): string {
   return t<string>(locale, key).replace(/\{(\w+)\}/g, (match, name) =>

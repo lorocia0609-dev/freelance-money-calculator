@@ -3,8 +3,9 @@ import type { Locale } from '../../../lib/constants';
 import { LOCALES } from '../../../lib/constants';
 import ToolLayout from '../../../layouts/ToolLayout.astro';
 import TargetRateCalculator, { type TargetRateStrings } from '../../../components/tools/TargetRateCalculator';
+import ToolContent, { type ToolContentData } from '../../../components/tools/ToolContent.astro';
 import { DEFAULT_CURRENCY } from '../../../lib/constants';
-import { t } from '../../../i18n/utils';
+import { t, tOptional } from '../../../i18n/utils';
 import { TOOLS, toolAlternates } from '../../../lib/registry';
 
 /**
@@ -23,9 +24,22 @@ export function getStaticPaths() {
 
 const locale = Astro.params.locale as Locale;
 const { toolId, status } = Astro.props;
-const alternates = toolAlternates(TOOLS.find((tool) => tool.id === toolId)!);
+const tool = TOOLS.find((candidate) => candidate.id === toolId)!;
+const alternates = toolAlternates(tool);
 const isDraft = status === 'draft';
 
+const content = tOptional<ToolContentData>(locale, `${toolId}.content`);
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? Astro.site?.toString() ?? '';
+const absolute = (path: string) => new URL(path, siteUrl).toString();
+const homeHref = `/${locale}/`;
+
+/*
+ * Structured data is emitted only for indexable pages: a draft is noindex, so
+ * marking it up would describe a page search engines are told to ignore.
+ * Every block below mirrors text that is actually visible — FAQ answers come
+ * from the same array the page renders, since a mismatch between markup and
+ * visible content is a manual-action risk.
+ */
 const jsonLd = isDraft
   ? []
   : [
@@ -33,11 +47,35 @@ const jsonLd = isDraft
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         name: t(locale, `${toolId}.title`),
+        description: t(locale, `${toolId}.metaDescription`),
+        url: absolute(Astro.url.pathname),
         applicationCategory: 'FinanceApplication',
         operatingSystem: 'Any',
         inLanguage: locale,
+        isAccessibleForFree: true,
         offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: t(locale, 'common.home'), item: absolute(homeHref) },
+          { '@type': 'ListItem', position: 2, name: t(locale, `${toolId}.title`), item: absolute(Astro.url.pathname) },
+        ],
+      },
+      ...(content
+        ? [
+            {
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: content.faq.items.map((item) => ({
+                '@type': 'Question',
+                name: item.q,
+                acceptedAnswer: { '@type': 'Answer', text: item.a },
+              })),
+            },
+          ]
+        : []),
     ];
 ---
 <ToolLayout
@@ -68,4 +106,6 @@ const jsonLd = isDraft
       strings={t<TargetRateStrings>(locale, 'targetRate.ui')}
     />
   )}
+
+  {content && <ToolContent content={content} homeHref={homeHref} hasRelated={tool.related.length > 0} />}
 </ToolLayout>

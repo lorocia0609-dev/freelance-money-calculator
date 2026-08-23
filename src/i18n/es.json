@@ -141,6 +141,146 @@
       "copyLink": "Copiar enlace",
       "copied": "Enlace copiado",
       "shareHelp": "El enlace reproduce exactamente estos valores. Nada de lo que introduces sale de tu navegador."
+    },
+    "content": {
+      "whatItDoes": {
+        "heading": "Qué calcula esta herramienta",
+        "body": [
+          "Esta calculadora convierte un objetivo de ingresos en una tarifa por hora. Tú indicas cuánto quieres que te quede cada mes; ella recorre el camino inverso pasando por las horas que puedes facturar de verdad, los impuestos y cotizaciones, la comisión de la plataforma si la hay y los gastos del negocio, y devuelve la tarifa que hace que las cuentas terminen donde querías.",
+          "La mayoría de los consejos sobre tarifas parten de lo que cobran los demás. Este parte de lo que cuesta tu propio año. Las dos preguntas merecen respuesta, pero solo una de ellas tiene una que puedas comprobar."
+        ]
+      },
+      "howToUse": {
+        "heading": "Cómo usarla",
+        "intro": "El resultado se actualiza mientras escribes, así que sale más a cuenta cambiar un número y ver qué pasa que intentar acertar con todos los campos a la primera.",
+        "steps": [
+          "Introduce lo que quieres que te quede cada mes: la cantidad que queda después de impuestos y gastos, no la que facturas.",
+          "Define tu ritmo de trabajo: días por semana, horas por día y las semanas que trabajas de verdad una vez descuentas vacaciones, festivos y bajas.",
+          "Indica qué porcentaje de esas horas te paga realmente un cliente. Es el dato que más mueve el resultado.",
+          "Configura las deducciones: impuestos y cotizaciones, la comisión del marketplace si trabajas con uno, y los gastos del negocio como porcentaje de lo que facturas.",
+          "Lee la tarifa y después cambia la suposición que te parezca menos defendible, para ver cuánto pesa."
+        ],
+        "outro": "La barra de direcciones reproduce siempre exactamente lo que estás viendo, así que puedes guardar un escenario o enviárselo a alguien sin necesidad de registrar nada."
+      },
+      "variables": {
+        "heading": "Qué significa cada dato",
+        "intro": "Dos de estos campos son hechos objetivos de tu calendario. El resto son estimaciones, y la calidad del resultado depende por completo de lo honestas que sean.",
+        "items": [
+          {
+            "term": "Ingreso mensual objetivo",
+            "definition": "Lo que quieres que te quede, después de todo. Si vienes de trabajar por cuenta ajena, tu antiguo sueldo no es esta cifra: la nómina llegaba después de que la empresa pagara su parte de las cotizaciones, e incluía vacaciones pagadas, bajas, equipo y a menudo formación. Esos costes no han desaparecido: ahora los pagas tú."
+          },
+          {
+            "term": "Días por semana y horas por día",
+            "definition": "Tu capacidad real, no tu ambición. Usa el ritmo que puedes mantener un año entero, no el de tu semana más intensa."
+          },
+          {
+            "term": "Semanas trabajadas al año",
+            "definition": "52 no es la respuesta. Resta vacaciones, festivos y las semanas que se pierden por enfermedad o entre un proyecto y el siguiente. Todo lo que restes lo tienen que pagar igualmente las semanas en las que sí trabajas."
+          },
+          {
+            "term": "Horas facturables",
+            "definition": "El porcentaje de tus horas de trabajo que un cliente paga. El resto se va en propuestas que no salen, facturación, perseguir cobros, captación, gestión, formación y revisiones no pagadas. La herramienta arranca en un 60% como punto de partida razonable, no como una medición: si quieres una cifra que puedas defender, apunta unas cuantas semanas normales y usa lo que salga."
+          },
+          {
+            "term": "Impuestos y cotizaciones",
+            "definition": "Tu tipo estimado sobre el beneficio, incluyendo la cotización que te corresponda. Varía enormemente según el país y según cómo estés dado de alta, así que la calculadora te lo pregunta en lugar de suponerlo."
+          },
+          {
+            "term": "Comisión de plataforma",
+            "definition": "Lo que se lleva un marketplace de cada factura. Pon 0 si facturas directamente a tus clientes."
+          },
+          {
+            "term": "Gastos del negocio",
+            "definition": "Software, equipo, seguros, gestoría, coworking y similares, como porcentaje de lo que facturas. Si tus gastos son sobre todo fijos, calcula aproximadamente cuánto suman al año y compáralo con la cifra de facturación anual que devuelve la calculadora."
+          }
+        ]
+      },
+      "formula": {
+        "heading": "Cómo sale el número",
+        "body": [
+          "La comisión de la plataforma y los gastos del negocio se descuentan primero de la factura. El impuesto se aplica después, sobre lo que queda, porque tanto las comisiones como los gastos suelen ser deducibles: gravar la factura entera significaría pagar impuestos por dinero que nunca llegas a recibir.",
+          "Así, la parte de cada factura que acaba siendo tuya es (1 − comisión − gastos) × (1 − impuesto). La facturación anual que necesitas es tu objetivo anual dividido entre esa proporción, y la tarifa por hora es esa facturación dividida entre las horas que puedes facturar.",
+          "Hay una consecuencia que conviene conocer: los tres porcentajes pueden sumar más de 100% y el problema seguir teniendo solución, porque el impuesto solo grava lo que queda tras los otros dos. Lo que sí es imposible es que la comisión y los gastos juntos se lleven el 100% de la factura, y en ese caso la calculadora lo dice en lugar de devolver una cifra."
+        ],
+        "exampleHeading": "Un ejemplo paso a paso",
+        "exampleIntro": "Supongamos que quieres que te queden 4.000 al mes, trabajas cinco días de 8 horas durante 46 semanas, el 60% de esas horas son facturables, y tienes un 20% de impuestos, un 10% de comisión y un 10% de gastos.",
+        "exampleSteps": [
+          "Te quedas con (1 − 0,10 − 0,10) × (1 − 0,20) = 64% de cada factura.",
+          "Tu objetivo anual es 4.000 × 12 = 48.000, así que necesitas facturar 48.000 ÷ 0,64 = 75.000 al año.",
+          "Trabajas 5 × 8 × 46 = 1.840 horas, de las cuales el 60% — 1.104 horas — son facturables.",
+          "75.000 ÷ 1.104 da una tarifa de unos 67,93 por hora."
+        ],
+        "exampleOutro": "Comprobándolo al revés: 75.000 menos 7.500 de comisión y 7.500 de gastos deja 60.000 de beneficio; un 20% de impuestos sobre eso son 12.000; y 75.000 − 7.500 − 7.500 − 12.000 son exactamente los 48.000 que pediste."
+      },
+      "reading": {
+        "heading": "Cómo interpretar el resultado",
+        "body": [
+          "Trata la tarifa por hora como un suelo, no como un precio. Es el punto por debajo del cual el año no llega al objetivo que has introducido: no es un precio de mercado, ni lo que un cliente concreto vaya a aceptar.",
+          "Las cifras de facturación mensual y anual son lo que necesitas facturar, y suelen ser el dato más útil cuando estás decidiendo si te compensa una iguala o un proyecto a precio cerrado.",
+          "Las horas facturables son la suposición sobre la que se sostiene toda la tarifa. Si no puedes llenar esas horas de forma realista, la tarifa se queda corta, porque el mismo ingreso tiene que salir de menos horas.",
+          "Solo hay dos formas de bajar la tarifa: cobrar por más parte de tu tiempo o necesitar menos dinero. Subir el porcentaje facturable suele ser más alcanzable que subir el precio, y es la palanca que casi nadie mira."
+        ]
+      },
+      "limitations": {
+        "heading": "Qué no tiene en cuenta",
+        "intro": "La aritmética es exacta, pero descansa sobre un modelo sencillo de un año. No sabe nada de:",
+        "items": [
+          "Ingresos irregulares. Da por hecho un año estable, y el trabajo freelance rara vez lo es. Un trimestre flojo lo tienen que absorber los buenos.",
+          "La demanda. Te dice lo que necesitas cobrar, no lo que alguien va a pagar. Si el número parece imposible para tu mercado, eso es información sobre el mercado, no un fallo de la cuenta.",
+          "Los sistemas fiscales reales. Aquí el impuesto es un porcentaje plano. Los sistemas reales son progresivos, con mínimos, tramos, deducciones y reglas propias para las cotizaciones.",
+          "Los costes fijos. Los gastos se tratan como un porcentaje de la facturación. Los costes que no cambian aunque factures menos se comportan de otra manera, sobre todo en un año flojo.",
+          "El IVA y equivalentes, que normalmente repercutes y liquidas en lugar de ganarlos, así que no forman parte de este cálculo.",
+          "Los impagos, los cobros tardíos y el trabajo extra no facturado, que reducen lo que acabas ingresando de verdad.",
+          "La conversión de divisas. Todo se calcula en la moneda que elijas y no se convierte nada."
+        ]
+      },
+      "disclaimer": {
+        "heading": "Esto no es asesoramiento fiscal ni financiero",
+        "body": "Los porcentajes de impuestos, comisión y gastos son estimaciones que defines tú, y cambian según el país, el contrato y cómo estés dado de alta. Esta calculadora es orientación general y tiene finalidad divulgativa. No es asesoramiento fiscal, financiero, contable ni legal, y no conoce tu situación concreta. Antes de basar en cualquier cifra de aquí un contrato, una declaración o una decisión de negocio, contrástala con un profesional cualificado de tu país."
+      },
+      "faq": {
+        "heading": "Preguntas frecuentes",
+        "items": [
+          {
+            "q": "¿Cuánto debería cobrar como freelance?",
+            "a": "No hay una cifra única, porque depende de lo que necesites ingresar y de cuánto de tu tiempo puedes facturar realmente. Empieza por tus propios costes con esta calculadora y después compara el resultado con lo que sepas de tu mercado. Si la tarifa que necesitas queda muy por encima de lo que tu mercado paga, esa diferencia es el problema real a resolver: reduciendo tiempo no facturable, cambiando de tipo de cliente o cambiando lo que vendes."
+          },
+          {
+            "q": "¿Cómo convierto mi antiguo sueldo en una tarifa freelance?",
+            "a": "No lo dividas entre 1.800 horas y ya está. La nómina era lo que quedaba después de que la empresa pagara su parte de las cotizaciones, e incluía vacaciones pagadas, bajas y equipo. Como autónomo pagas todo eso tú, y con menos horas facturables de las que tiene un año completo de trabajo. Introduce como objetivo lo que quieres que te quede limpio al mes y deja que la calculadora añada el resto."
+          },
+          {
+            "q": "¿Qué porcentaje de mis horas será realmente facturable?",
+            "a": "Nadie puede decírtelo sin mirar tu semana. La herramienta arranca en 60% porque es una suposición habitual, no una medición. La forma honesta de averiguar la tuya es apuntar unas semanas normales y repartir el tiempo entre lo que un cliente paga y todo lo demás: propuestas, facturación, captación, gestión, formación y revisiones no pagadas."
+          },
+          {
+            "q": "¿La tarifa debe incluir los impuestos?",
+            "a": "La tarifa que devuelve esta calculadora es lo que facturas, antes de que el impuesto se aplique sobre tu beneficio. Así es como se suelen expresar las tarifas. El IVA, cuando corresponde, se añade aparte sobre tu tarifa y se repercute en lugar de ganarse, así que no entra en este cálculo."
+          },
+          {
+            "q": "¿Cuántas semanas al año debería contar?",
+            "a": "Menos de 52. Decide cuántas vacaciones quieres, suma los festivos y deja margen para bajas y para los huecos entre proyectos. Todo lo que quites lo tienen que financiar las semanas que dejas, que es exactamente lo que hace esta calculadora al repartir la facturación anual entre los doce meses."
+          },
+          {
+            "q": "¿Y si la tarifa sale más alta de lo que se paga en mi mercado?",
+            "a": "Ese resultado es útil, no un error. Suele significar una de tres cosas: el objetivo de ingresos necesita más horas facturables de las que tienes, demasiada parte de tu semana no se paga, o estás vendiendo por horas algo que se vendería mejor por resultado. Prueba primero a cambiar el porcentaje facturable: normalmente es la suposición con más margen."
+          },
+          {
+            "q": "¿Sirve para una tarifa por día o para proyectos a precio cerrado?",
+            "a": "Sí, de forma indirecta. Multiplica la tarifa por hora por las horas facturables que tiene un día de verdad, que no es lo mismo que la duración de tu jornada. Para un precio cerrado, estima las horas facturables del proyecto y multiplica; después añade algo para las revisiones y la coordinación que las estimaciones suelen olvidar."
+          },
+          {
+            "q": "¿Lo que escribo aquí se envía a algún sitio?",
+            "a": "No. Todo el cálculo se hace en tu navegador. No se sube nada, no hay cuenta de usuario y el sitio no instala cookies. Los valores se guardan en el almacenamiento local de tu navegador para que sigan ahí cuando vuelvas, y el enlace de la barra de direcciones los lleva para que puedas compartir un escenario: esos son los dos únicos sitios a los que van tus números."
+          }
+        ]
+      },
+      "related": {
+        "heading": "Calculadoras relacionadas",
+        "empty": "Estamos preparando más calculadoras de dinero para freelancers. Mientras tanto, puedes ver todo lo que hay disponible en la página de inicio.",
+        "allTools": "Ver todas las calculadoras"
+      }
     }
   },
   "legal": {

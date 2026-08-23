@@ -141,6 +141,146 @@
       "copyLink": "Copy shareable link",
       "copied": "Link copied",
       "shareHelp": "The link reproduces exactly these values. Nothing you enter leaves your browser."
+    },
+    "content": {
+      "whatItDoes": {
+        "heading": "What this calculator works out",
+        "body": [
+          "This calculator turns an income goal into an hourly rate. You tell it what you want to keep each month; it works backwards through the hours you can actually invoice, the tax you owe, any platform commission and your business running costs, and returns the rate that makes the arithmetic land where you wanted it.",
+          "Most rate advice starts from what other people charge. This starts from what your own year costs. Both questions are worth asking, but only one of them has an answer you can check."
+        ]
+      },
+      "howToUse": {
+        "heading": "How to use it",
+        "intro": "The result updates as you type, so it is quicker to adjust a number and watch what happens than to get every field right first time.",
+        "steps": [
+          "Enter what you want to keep each month — the amount left after tax and expenses, not the amount you invoice.",
+          "Set your working pattern: days per week, hours per day, and the weeks you realistically work once holidays, public holidays and sick days are taken out.",
+          "Set the share of those working hours a client actually pays for. This is the input that moves the result the most.",
+          "Set your deductions: tax and contributions, any marketplace commission, and business costs as a share of what you invoice.",
+          "Read the rate, then change whichever assumption looks least defensible and see how much it matters."
+        ],
+        "outro": "The address bar always reproduces exactly what you are looking at, so you can bookmark a scenario or send it to someone without saving anything."
+      },
+      "variables": {
+        "heading": "What each input means",
+        "intro": "Two of these are simple facts about your calendar. The rest are estimates, and the quality of the result depends entirely on how honest they are.",
+        "items": [
+          {
+            "term": "Target monthly income",
+            "definition": "What you want left over, after everything. If you are coming from employment, your old salary is not this number: a salary arrived after employer contributions, and it came with paid holiday, sick pay, equipment and often a pension. Those costs did not disappear — they moved to you."
+          },
+          {
+            "term": "Working days per week and hours per day",
+            "definition": "Your capacity, not your ambition. Use the pattern you can hold for a year, not your busiest week."
+          },
+          {
+            "term": "Working weeks per year",
+            "definition": "52 is not the answer. Subtract holidays, public holidays, and the weeks you lose to illness or to gaps between contracts. Whatever you subtract still has to be paid for by the weeks you do work."
+          },
+          {
+            "term": "Billable hours",
+            "definition": "The share of your working hours a client pays for. The rest goes to proposals that do not convert, invoicing, chasing payment, marketing, admin, learning and unpaid revisions. The tool starts at 60% as a working assumption, not as a measurement — if you want a number you can defend, track a few ordinary weeks and use what you find."
+          },
+          {
+            "term": "Tax and contributions",
+            "definition": "Your own estimated rate on profit, including social contributions where you pay them. This varies enormously by country and by how you are registered, so the calculator asks you rather than guessing."
+          },
+          {
+            "term": "Platform fee",
+            "definition": "The commission a marketplace takes from each invoice. Set it to 0 if you invoice clients directly."
+          },
+          {
+            "term": "Business expenses",
+            "definition": "Software, hardware, insurance, accounting, coworking and similar, expressed as a share of what you invoice. If your costs are mostly fixed, work out roughly what they total in a year and compare that against the annual gross figure the calculator produces."
+          }
+        ]
+      },
+      "formula": {
+        "heading": "How the number is worked out",
+        "body": [
+          "The platform fee and your business expenses come off the invoice first. Tax then applies to what remains, because platform fees and business costs are normally deductible — taxing the full invoice would mean paying tax on money you never receive.",
+          "So the share of every invoice that survives to you is (1 − fee − expenses) × (1 − tax). Your required annual revenue is your annual target divided by that share, and the hourly rate is that revenue divided by the hours you can actually bill.",
+          "One consequence is worth knowing: the three percentages can add up to more than 100% and the problem is still solvable, because tax applies only to what is left after the other two. What is genuinely impossible is a fee and expenses that together reach 100% of the invoice, and the calculator says so rather than returning a number."
+        ],
+        "exampleHeading": "A worked example",
+        "exampleIntro": "Suppose you want to keep 4,000 a month, you work five 8-hour days across 46 weeks, 60% of those hours are billable, and you face 20% tax, a 10% platform fee and 10% expenses.",
+        "exampleSteps": [
+          "You keep (1 − 0.10 − 0.10) × (1 − 0.20) = 64% of every invoice.",
+          "Your annual target is 4,000 × 12 = 48,000, so you need to invoice 48,000 ÷ 0.64 = 75,000 a year.",
+          "You work 5 × 8 × 46 = 1,840 hours, of which 60% — 1,104 hours — are billable.",
+          "75,000 ÷ 1,104 gives an hourly rate of about 67.93."
+        ],
+        "exampleOutro": "Checking it backwards: 75,000 less a 7,500 fee and 7,500 of expenses leaves 60,000 of profit; 20% tax on that is 12,000; and 75,000 − 7,500 − 7,500 − 12,000 is exactly the 48,000 you asked for."
+      },
+      "reading": {
+        "heading": "How to read the result",
+        "body": [
+          "Treat the hourly rate as a floor rather than a price. It is the point below which the year does not reach the goal you entered — not a market price, and not what any particular client will agree to.",
+          "The monthly and annual gross figures are what you need to invoice, which is usually the more useful number when you are deciding whether a retainer or a fixed-price project is worth taking.",
+          "The billable hours figure is the assumption the whole rate rests on. If you cannot realistically fill those hours, the rate is too low, because the same income has to come from fewer of them.",
+          "There are only two ways to move the rate down: charge for more of your time, or need less money. Raising your billable share is often more achievable than raising your price, and it is the lever most people never look at."
+        ]
+      },
+      "limitations": {
+        "heading": "What this does not account for",
+        "intro": "The arithmetic is exact, but it rests on a simple model of a year. It does not know about:",
+        "items": [
+          "Uneven income. It assumes a steady year, and freelance work rarely is. A quiet quarter has to be absorbed by the busy ones.",
+          "Demand. It tells you what you need to charge, not what anyone will pay. If the number looks impossible for your market, that is information about the market, not a fault in the arithmetic.",
+          "Real tax systems. Tax is applied here as one flat percentage. Actual systems are progressive, with allowances, thresholds, deductions and separate rules for social contributions.",
+          "Fixed costs. Expenses are treated as a share of revenue. Costs that stay the same whatever you earn behave differently, especially in a slow year.",
+          "VAT and sales tax, which you normally collect and pass on rather than earn, so they are not part of this calculation.",
+          "Late payment, bad debt and scope creep, all of which reduce what you actually collect.",
+          "Currency conversion. Everything is computed in the currency you pick, and nothing is converted."
+        ]
+      },
+      "disclaimer": {
+        "heading": "Not financial or tax advice",
+        "body": "The tax, platform fee and expense percentages are estimates you set yourself, and they vary by country, by contract and by how you are registered. This calculator is general guidance and educational in nature. It is not tax, financial, accounting or legal advice, and it does not know your circumstances. Before you rely on any figure here for a contract, a tax return or a business decision, check it with a qualified professional in your own jurisdiction."
+      },
+      "faq": {
+        "heading": "Common questions",
+        "items": [
+          {
+            "q": "How much should I charge as a freelancer?",
+            "a": "There is no single right number, because it depends on what you need to earn and how much of your time you can actually bill. Start from your own costs using this calculator, then compare the result against what you know about your market. If the rate you need is far above what your market pays, the gap is the real problem to solve — by reducing unbillable time, changing who you work for, or changing what you sell."
+          },
+          {
+            "q": "How do I turn my old salary into a freelance rate?",
+            "a": "Do not divide it by 2,080 hours. A salary was the amount left after your employer paid social contributions on top, and it came with paid holiday, sick leave, equipment and often a pension. As a freelancer you cover all of that yourself, out of fewer billable hours than a full working year contains. Enter the monthly take-home you actually want as the target and let the calculator add the rest back."
+          },
+          {
+            "q": "What percentage of my hours will really be billable?",
+            "a": "Nobody can tell you without looking at your week. The tool starts at 60% because it is a common working assumption, not a measured figure. The honest way to find yours is to track a few ordinary weeks and split the time between work a client pays for and everything else — proposals, invoicing, marketing, admin, learning and unpaid revisions."
+          },
+          {
+            "q": "Should tax be included in the rate I quote?",
+            "a": "The rate this calculator produces is what you invoice, before tax is taken out of your profit. That is normally how rates are quoted. VAT or sales tax, where it applies, is usually added on top of your rate and passed on rather than earned, so it is not part of this calculation."
+          },
+          {
+            "q": "How many weeks a year should I plan to work?",
+            "a": "Fewer than 52. Decide how much holiday you want, add public holidays, and leave something for illness and for the gaps between contracts. Whatever you take out has to be funded by the weeks you keep, which is exactly what this calculator does when it spreads your annual revenue across all twelve months."
+          },
+          {
+            "q": "What if the rate comes out higher than clients in my market pay?",
+            "a": "That is a useful result rather than a broken one. It usually means one of three things: the target income needs more billable hours than you have, too much of your week is unpaid, or the work you are selling is priced by the hour when it would be better priced by the outcome. Try changing the billable share first — it is usually the assumption with the most room in it."
+          },
+          {
+            "q": "Can I use this for a day rate or a fixed-price project?",
+            "a": "Yes, indirectly. Multiply the hourly rate by the number of billable hours a day genuinely contains, which is not the same as the length of your working day. For a fixed price, estimate the billable hours the project will take and multiply — then add something for the revisions and coordination that estimates usually miss."
+          },
+          {
+            "q": "Is anything I type here sent anywhere?",
+            "a": "No. The whole calculation runs in your browser. Nothing is uploaded, there is no account, and the site sets no cookies. Values are kept in your browser's local storage so they are still there when you come back, and the link in the address bar carries them so you can share a scenario — those are the only two places your numbers go."
+          }
+        ]
+      },
+      "related": {
+        "heading": "Related calculators",
+        "empty": "More freelance money calculators are on the way. In the meantime, you can find everything currently available on the home page.",
+        "allTools": "Browse all calculators"
+      }
     }
   },
   "legal": {

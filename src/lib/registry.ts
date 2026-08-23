@@ -33,7 +33,7 @@ export const TOOLS: ToolMeta[] = [
     },
     category: 'rates',
     related: [],
-    status: 'draft',
+    status: 'published',
   },
 ];
 

@@ -1,0 +1,126 @@
+---
+/**
+ * Renders the explanatory content below a tool.
+ *
+ * Driven entirely by the shape of a tool's `content` namespace, so every tool
+ * gets the same skeleton and adding one stays a matter of writing copy rather
+ * than building a page. A bare calculator is a thin page: it neither ranks nor
+ * passes an ad network review, and this is the part that fixes that.
+ *
+ * The FAQ rendered here and the FAQPage JSON-LD on the page are read from the
+ * same array, so the markup cannot drift from the visible text — a mismatch
+ * there is a manual-action risk.
+ */
+export interface ToolContentData {
+  whatItDoes: { heading: string; body: string[] };
+  howToUse: { heading: string; intro: string; steps: string[]; outro: string };
+  variables: { heading: string; intro: string; items: { term: string; definition: string }[] };
+  formula: {
+    heading: string;
+    body: string[];
+    exampleHeading: string;
+    exampleIntro: string;
+    exampleSteps: string[];
+    exampleOutro: string;
+  };
+  reading: { heading: string; body: string[] };
+  limitations: { heading: string; intro: string; items: string[] };
+  disclaimer: { heading: string; body: string };
+  faq: { heading: string; items: { q: string; a: string }[] };
+  related: { heading: string; empty: string; allTools: string };
+}
+
+export interface Props {
+  content: ToolContentData;
+  homeHref: string;
+  hasRelated: boolean;
+}
+
+const { content, homeHref, hasRelated } = Astro.props;
+const prose = 'mt-3 leading-relaxed';
+const section = 'mt-10';
+const h2 = 'text-xl font-semibold tracking-tight';
+---
+<section class={section}>
+  <h2 class={h2}>{content.whatItDoes.heading}</h2>
+  {content.whatItDoes.body.map((paragraph) => <p class={prose}>{paragraph}</p>)}
+</section>
+
+<section class={section}>
+  <h2 class={h2}>{content.howToUse.heading}</h2>
+  <p class={prose}>{content.howToUse.intro}</p>
+  <ol class="mt-4 grid list-decimal gap-2 pl-5">
+    {content.howToUse.steps.map((step) => <li class="leading-relaxed">{step}</li>)}
+  </ol>
+  <p class={prose}>{content.howToUse.outro}</p>
+</section>
+
+<section class={section}>
+  <h2 class={h2}>{content.variables.heading}</h2>
+  <p class={prose}>{content.variables.intro}</p>
+  <dl class="mt-4 grid gap-4">
+    {content.variables.items.map((item) => (
+      <div>
+        <dt class="font-semibold">{item.term}</dt>
+        <dd class="mt-1 leading-relaxed">{item.definition}</dd>
+      </div>
+    ))}
+  </dl>
+</section>
+
+<section class={section}>
+  <h2 class={h2}>{content.formula.heading}</h2>
+  {content.formula.body.map((paragraph) => <p class={prose}>{paragraph}</p>)}
+
+  <h3 class="mt-6 text-lg font-semibold">{content.formula.exampleHeading}</h3>
+  <p class={prose}>{content.formula.exampleIntro}</p>
+  <ol class="mt-4 grid list-decimal gap-2 pl-5">
+    {content.formula.exampleSteps.map((step) => <li class="leading-relaxed">{step}</li>)}
+  </ol>
+  <p class={prose}>{content.formula.exampleOutro}</p>
+</section>
+
+<section class={section}>
+  <h2 class={h2}>{content.reading.heading}</h2>
+  {content.reading.body.map((paragraph) => <p class={prose}>{paragraph}</p>)}
+</section>
+
+<section class={section}>
+  <h2 class={h2}>{content.limitations.heading}</h2>
+  <p class={prose}>{content.limitations.intro}</p>
+  <ul class="mt-4 grid list-disc gap-2 pl-5">
+    {content.limitations.items.map((item) => <li class="leading-relaxed">{item}</li>)}
+  </ul>
+</section>
+
+<section class={section}>
+  <h2 class={h2}>{content.faq.heading}</h2>
+  <div class="mt-4 grid gap-3">
+    {content.faq.items.map((item) => (
+      <details class="rounded-lg border p-4" style="border-color: var(--color-border)">
+        <summary class="cursor-pointer font-medium">{item.q}</summary>
+        <p class="mt-3 leading-relaxed">{item.a}</p>
+      </details>
+    ))}
+  </div>
+</section>
+
+{/*
+  Internal links spread authority to new pages and are the cheapest ranking
+  lever a small site has. Until a related tool exists, this still points
+  somewhere real rather than rendering an empty heading.
+*/}
+{!hasRelated && (
+  <section class={section}>
+    <h2 class={h2}>{content.related.heading}</h2>
+    <p class={prose}>{content.related.empty}</p>
+    <p class="mt-3">
+      <a href={homeHref} class="font-medium underline">{content.related.allTools}</a>
+    </p>
+  </section>
+)}
+
+<section class={section}>
+  <h2 class={h2}>{content.disclaimer.heading}</h2>
+  <p class={prose} style="color: var(--color-ink-muted)">{content.disclaimer.body}</p>
+</section>
